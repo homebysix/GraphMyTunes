@@ -16,6 +16,18 @@ dependencies = [
     "pyyaml",
 ]
 
+[project.scripts]
+graphmytunes = "src.main:main"
+
+[project.urls]
+Homepage = "https://github.com/homebysix/GraphMyTunes"
+Repository = "https://github.com/homebysix/GraphMyTunes"
+Issues = "https://github.com/homebysix/GraphMyTunes/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
 [tool.black]
 line-length = 88
 
