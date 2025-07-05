@@ -1,0 +1,36 @@
+# Configuration file
+config.yaml
+
+# Graph outputs
+output/
+
+# Python virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+
+# macOS system files
+.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# VSCode settings
+.vscode/
+
+# Test coverage reports
+htmlcov/
+.coverage
+coverage.xml
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

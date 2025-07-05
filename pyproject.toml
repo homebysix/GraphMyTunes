@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GraphMyTunes"
+version = "1.0.0"
+description = "Apple Music library analysis and visualization tool"
+authors = [{ name = "Elliot Jordan", email = "GraphMyTunes@elliotjordan.com" }]
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.8"
+dependencies = [
+    "pandas",
+    "matplotlib",
+    "pyyaml",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_third_party = ["pandas", "matplotlib", "pyyaml", "toml"]
+default_section = "THIRDPARTY"
+skip_gitignore = true
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]

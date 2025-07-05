@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Major Version</key><integer>1</integer>
+	<key>Minor Version</key><integer>1</integer>
+	<key>Date</key><date>2022-06-15T04:47:18Z</date>
+	<key>Application Version</key><string>1.2.4.3</string>
+	<key>Features</key><integer>5</integer>
+	<key>Show Content Ratings</key><true/>
+	<key>Music Folder</key><string>file:///Users/testuser/Music/iTunes/iTunes%20Music/</string>
+	<key>Library Persistent ID</key><string>9F3A7B2C8D1E4F65</string>
+	<key>Tracks</key>
+	<dict>
+		<key>9425</key>
+		<dict>
+			<key>Track ID</key><integer>9425</integer>
+			<key>Name</key><string>So What</string>
+			<key>Artist</key><string>Miles Davis</string>
+			<key>Album Artist</key><string>Miles Davis</string>
+			<key>Composer</key><string>Miles Davis</string>
+			<key>Album</key><string>Kind of Blue</string>
+			<key>Genre</key><string>Jazz</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>9223284</integer>
+			<key>Total Time</key><integer>565404</integer>
+			<key>Start Time</key><integer>659</integer>
+			<key>Stop Time</key><integer>562485</integer>
+			<key>Disc Number</key><integer>1</integer>
+			<key>Disc Count</key><integer>1</integer>
+			<key>Track Number</key><integer>1</integer>
+			<key>Track Count</key><integer>6</integer>
+			<key>Year</key><integer>2000</integer>
+			<key>BPM</key><integer>137</integer>
+			<key>Date Modified</key><date>2004-01-04T17:19:59Z</date>
+			<key>Date Added</key><date>2005-02-28T07:35:23Z</date>
+			<key>Bit Rate</key><integer>128</integer>
+			<key>Sample Rate</key><integer>44100</integer>
+			<key>Play Count</key><integer>7</integer>
+			<key>Play Date</key><integer>3718119683</integer>
+			<key>Play Date UTC</key><date>2021-10-27T02:01:23Z</date>
+			<key>Skip Count</key><integer>1</integer>
+			<key>Skip Date</key><date>2009-08-12T23:08:01Z</date>
+			<key>Release Date</key><date>2000-05-24T12:00:00Z</date>
+			<key>Rating</key><integer>80</integer>
+			<key>Album Rating</key><integer>60</integer>
+			<key>Album Rating Computed</key><true/>
+			<key>Normalization</key><integer>2036</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Sort Album Artist</key><string>Davis, Miles</string>
+			<key>Sort Artist</key><string>Davis, Miles</string>
+			<key>Persistent ID</key><string>7A2F9B8C1D3E4F56</string>
+
+			<key>Track Type</key><string>File</string>
+			<key>File Type</key><integer>1295270176</integer>
+			<key>Location</key><string>file:///Users/testuser/Music/Music/Media.localized/Music/Miles%20Davis/Kind%20of%20Blue/01%20So%20What.m4a</string>
+			<key>File Folder Count</key><integer>5</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+		<key>33193</key>
+		<dict>
+			<key>Track ID</key><integer>33193</integer>
+			<key>Name</key><string>Same Smile, Different Face</string>
+			<key>Artist</key><string>KNOWER</string>
+			<key>Album Artist</key><string>KNOWER</string>
+			<key>Album</key><string>KNOWER FOREVER</string>
+			<key>Genre</key><string>Electronica/Dance</string>
+			<key>Kind</key><string>AAC audio file</string>
+			<key>Size</key><integer>2688897</integer>
+			<key>Total Time</key><integer>135140</integer>
+			<key>Track Number</key><integer>7</integer>
+			<key>Year</key><integer>2023</integer>
+			<key>Date Modified</key><date>2023-06-03T19:31:18Z</date>
+			<key>Date Added</key><date>2023-06-02T23:49:56Z</date>
+			<key>Bit Rate</key><integer>156</integer>
+			<key>Sample Rate</key><integer>48000</integer>
+			<key>Comments</key><string>Visit https://knowermusic.bandcamp.com</string>
+			<key>Play Count</key><integer>23</integer>
+			<key>Play Date</key><integer>3818413616</integer>
+			<key>Play Date UTC</key><date>2024-12-30T22:26:56Z</date>
+			<key>Skip Count</key><integer>2</integer>
+			<key>Skip Date</key><date>2023-07-02T23:56:42Z</date>
+			<key>Rating</key><integer>60</integer>
+			<key>Album Rating</key><integer>60</integer>
+			<key>Album Rating Computed</key><true/>
+			<key>Normalization</key><integer>1270</integer>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>F8A3C1D2E4B7F6A9</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file:///Users/testuser/Music/Music/Media.localized/Music/KNOWER/KNOWER%20FOREVER/07%20Same%20Smile,%20Different%20Face.m4a</string>
+			<key>File Folder Count</key><integer>5</integer>
+			<key>Library Folder Count</key><integer>1</integer>
+		</dict>
+	</dict>
+</dict>
+</plist>
