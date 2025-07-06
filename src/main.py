@@ -31,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "itunes_xml_path",
         type=str,
+        nargs="?",
         default=None,
         help="Path to the XML file exported from Music.app.",
     )
@@ -120,6 +121,11 @@ def main() -> None:
     if args.version:
         print(f"GraphMyTunes {__version__}")
         sys.exit(0)
+
+    # Check if iTunes XML path is provided
+    if not args.itunes_xml_path:
+        logging.error("Error: iTunes XML path is required.")
+        sys.exit(1)
 
     # Add top N results parameter to config
     if args.top <= 0:
