@@ -4,17 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "GraphMyTunes"
-version = "1.0.0"
+version = "1.0.1b1"
 description = "Apple Music library analysis and visualization tool"
 authors = [{ name = "Elliot Jordan", email = "GraphMyTunes@elliotjordan.com" }]
 readme = "README.md"
-license = "Apache-2.0"
-requires-python = ">=3.8"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
 dependencies = [
     "pandas",
     "matplotlib",
     "pyyaml",
 ]
+
+[project.scripts]
+graphmytunes = "src.main:main"
+
+[project.urls]
+Homepage = "https://github.com/homebysix/GraphMyTunes"
+Repository = "https://github.com/homebysix/GraphMyTunes"
+Issues = "https://github.com/homebysix/GraphMyTunes/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
 
 [tool.black]
 line-length = 88

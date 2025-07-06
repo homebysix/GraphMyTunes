@@ -5,16 +5,15 @@
 - Local clone of this repository
 - Build tools (`venv/bin/python3 -m pip install build`)
 - Twine (`venv/bin/python3 -m pip install twine`)
-- Account on test.pypi.org
-- Account on pypi.org
+- Accounts on test.pypi.org and pypi.org
 
 ## Steps
 
 1. Ensure the version in **pyproject.toml** has been updated.
 
-1. Ensure the change log has been updated and reflects actual release date.
+1. Ensure the CHANGELOG.md has been updated and reflects actual release date.
 
-1. Merge development branch to main branch.
+1. Merge dev branch to main branch.
 
 1. Run unit tests and fix any errors:
 
@@ -29,23 +28,27 @@
 
         venv/bin/python3 -m twine upload --repository testpypi dist/*
 
-1. View resulting project on test.pypi.org and make sure it looks good.
+1. View resulting [project on test.pypi.org](https://test.pypi.org/project/GraphMyTunes/) and make sure it looks good.
 
 1. Install test GraphMyTunes from test.pypi.org:
 
-        python3 -m pip install --upgrade -i https://test.pypi.org/simple/ GraphMyTunes
+        venv/bin/python3 -m pip install --upgrade -i https://test.pypi.org/simple/ GraphMyTunes
 
-1. Perform tests - manual for now.
+1. Perform manual tests (a GitHub Actions workflow also performs these tests):
+
+        venv/bin/graphmytunes --version
+        venv/bin/graphmytunes --help
+        venv/bin/graphmytunes /path/to/itunes.xml
 
 1. Upload package to pypi.org:
 
         venv/bin/python3 -m twine upload dist/*
 
-1. View resulting project on pypi.org and make sure it looks good.
+1. View resulting [project on pypi.org](https://pypi.org/project/GraphMyTunes/) and make sure it looks good.
 
 1. Install production GraphMyTunes:
 
-        python3 -m pip install --upgrade GraphMyTunes
+        venv/bin/python3 -m pip install --upgrade GraphMyTunes
 
 1. Create new [release](https://github.com/homebysix/GraphMyTunes/releases) on GitHub. Add notes from change log.
 

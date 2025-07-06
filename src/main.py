@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import pandas as pd
 
@@ -31,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "itunes_xml_path",
         type=str,
+        nargs="?",
         default=None,
         help="Path to the XML file exported from Music.app.",
     )
@@ -64,7 +65,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def run_analysis(args: tuple[str, pd.DataFrame, dict, str]) -> tuple[str, str, float]:
+def run_analysis(
+    args: Tuple[str, pd.DataFrame, Dict[str, Any], str],
+) -> Tuple[str, str, float]:
     """Run a specific analysis in a separate process."""
     analysis, tracks_df, config, output_dir = args
 
@@ -120,6 +123,11 @@ def main() -> None:
     if args.version:
         print(f"GraphMyTunes {__version__}")
         sys.exit(0)
+
+    # Check if iTunes XML path is provided
+    if not args.itunes_xml_path:
+        logging.error("Error: iTunes XML path is required.")
+        sys.exit(1)
 
     # Add top N results parameter to config
     if args.top <= 0:

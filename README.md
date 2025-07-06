@@ -25,7 +25,7 @@
 ## Requirements
 
 - **Apple Music app** for Mac or Windows
-- **Python** (tested with 3.13, but probably works fine with 3.8 and higher)
+- **Python** (tested primarily with 3.13, but probably works fine with 3.9 and higher)
 
 ## Quick Start
 
@@ -44,7 +44,7 @@ Follow these 3 steps to get started analyzing your music library.
 1. Save the XML file to a convenient location.
 
 > [!TIP]
-> **Tip:** I use a date-based filename like `2025-06-01.xml` so that I can save multiple snapshots of my library over time.
+> **Tip:** I use a date-based filename like `2025-07-05.xml` so that I can save multiple snapshots of my library over time.
 
 ### Step 3: Run GraphMyTunes
 
