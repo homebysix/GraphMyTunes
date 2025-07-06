@@ -50,9 +50,12 @@ Follow these 3 steps to get started analyzing your music library.
 
 1. Provide the path to the XML you just saved to GraphMyTunes for analysis.
 
-        GraphMyTunes ~/Music/2025-07-05.xml
+        graphmytunes ~/Music/2025-07-05.xml --output ~/Music/GraphMyTunesOutput
 
-1. When processing is complete, view your graphs in the `output` folder.
+1. When processing is complete, view your graphs in the folder you specified in `--output`.
+
+> [!TIP]
+> **Tip:** If you don't specify an output folder, GraphMyTunes will save your graphs alongside the xml file you provided.
 
 ## Featured Analyses
 
