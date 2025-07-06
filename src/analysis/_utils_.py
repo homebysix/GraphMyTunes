@@ -8,6 +8,7 @@ import matplotlib
 # Use the 'Agg' backend for non-GUI rendering
 matplotlib.use("Agg")
 import os
+from typing import List
 
 # flake8: noqa: E402
 import matplotlib.pyplot as plt
@@ -16,7 +17,7 @@ import pandas as pd
 from src import __version__
 
 
-def ensure_columns(df: pd.DataFrame, columns: list[str]) -> None:
+def ensure_columns(df: pd.DataFrame, columns: List[str]) -> None:
     """Ensure the DataFrame contains the specified columns."""
     missing = [col for col in columns if col not in df.columns]
     if missing:
@@ -38,7 +39,7 @@ def trim_label(label: str, max_len: int = 32) -> str:
 def get_numeric_axes(ax: plt.Axes) -> str:
     """Return "x" if x-axis is numeric, "y" otherwise."""
 
-    def is_numeric(tick_labels: list[plt.Text]) -> bool:
+    def is_numeric(tick_labels: List[plt.Text]) -> bool:
         """Check if the first tick label of a given axis is numeric."""
         if not tick_labels:
             return False

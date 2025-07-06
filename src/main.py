@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import pandas as pd
 
@@ -65,7 +65,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def run_analysis(args: tuple[str, pd.DataFrame, dict, str]) -> tuple[str, str, float]:
+def run_analysis(
+    args: Tuple[str, pd.DataFrame, Dict[str, Any], str],
+) -> Tuple[str, str, float]:
     """Run a specific analysis in a separate process."""
     analysis, tracks_df, config, output_dir = args
 
