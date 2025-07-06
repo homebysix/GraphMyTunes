@@ -25,7 +25,7 @@
 ## Requirements
 
 - **Apple Music app** for Mac or Windows
-- **Python** (tested with 3.13, but probably works fine with 3.8 and higher)
+- **Python** (tested primarily with 3.13, but probably works fine with 3.9 and higher)
 
 ## Quick Start
 

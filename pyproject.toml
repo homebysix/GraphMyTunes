@@ -9,7 +9,7 @@ description = "Apple Music library analysis and visualization tool"
 authors = [{ name = "Elliot Jordan", email = "GraphMyTunes@elliotjordan.com" }]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "pandas",
     "matplotlib",
