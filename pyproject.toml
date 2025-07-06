@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "GraphMyTunes"
-version = "1.0.1b5"
+version = "1.0.0"
 description = "Apple Music library analysis and visualization tool"
 authors = [{ name = "Elliot Jordan", email = "GraphMyTunes@elliotjordan.com" }]
 readme = "README.md"
