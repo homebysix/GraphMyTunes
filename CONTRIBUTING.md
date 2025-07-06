@@ -22,8 +22,7 @@ Thank you for your interest in contributing to GraphMyTunes! Your help is welcom
 
 ## Code Quality & Style
 
-This project uses several tools to maintain code quality and style.  
-To set up these tools, install pre-commit (`brew install pre-commit`), then `cd` to your local clone of the GraphMyTunes repo and activate the pre-commit hooks (`pre-commit install`). Subsequent commits will be checked automatically for formatting and linting issues.
+This project uses several tools to maintain code quality and style. To set up these tools, install pre-commit (`brew install pre-commit`), then `cd` to your local clone of the GraphMyTunes repo and activate the pre-commit hooks (`pre-commit install`). Subsequent commits will be checked automatically for formatting and linting issues.
 
 ## Adding an Analysis
 
@@ -53,7 +52,7 @@ Please add or update tests for any new features or bug fixes.
 
 ## Reporting Bugs & Suggestions
 
-- Search [existing issues](https://github.com/yourusername/GraphMyTunes/issues) before opening a new one.
+- Search [existing issues](https://github.com/homebysix/GraphMyTunes/issues?q=is%3Aissue) before opening a new one.
 - When reporting a bug, include steps to reproduce, your OS, Python version, and any error messages.
 
 ---
