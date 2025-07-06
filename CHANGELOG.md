@@ -8,8 +8,8 @@ All notable changes to this project will be documented in this file. This projec
 
 Nothing yet.
 
-## 1.0.1 - 2025-07-05
+## 1.0.0 - 2025-07-05
 
 - Initial public release of GraphMyTunes!
 
-[Unreleased]: https://github.com/homebysix/GraphMyTunes/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/homebysix/GraphMyTunes/compare/v1.0.0...HEAD
