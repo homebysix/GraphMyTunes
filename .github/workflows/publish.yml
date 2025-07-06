@@ -26,7 +26,9 @@ jobs:
     if: |
       github.event_name == 'push' &&
       startsWith(github.ref, 'refs/tags/v') &&
-      (contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc'))
+      (contains(github.ref, 'a') ||
+      contains(github.ref, 'b') ||
+      contains(github.ref, 'rc'))
       ||
       github.event_name == 'workflow_dispatch' &&
       github.event.inputs.target == 'testpypi'
@@ -52,8 +54,8 @@ jobs:
     if: |
       github.event_name == 'push' &&
       startsWith(github.ref, 'refs/tags/v') &&
-      !contains(github.ref, 'alpha') &&
-      !contains(github.ref, 'beta') &&
+      !contains(github.ref, 'a') &&
+      !contains(github.ref, 'b') &&
       !contains(github.ref, 'rc')
       ||
       github.event_name == 'workflow_dispatch' &&
