@@ -34,9 +34,12 @@ jobs:
       run: |
         python -m unittest discover -vs tests
 
-    - name: Test entry point
+    - name: Test version flag
       run: |
         graphmytunes --version
+
+    - name: Test help flag
+      run: |
         graphmytunes --help
 
   build:
@@ -49,7 +52,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: '3.13'
 
     - name: Install build dependencies
       run: |
