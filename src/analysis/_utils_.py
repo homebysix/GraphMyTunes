@@ -33,7 +33,7 @@ def rating_to_stars(rating: pd.Series) -> pd.Series:
 def trim_label(label: str, max_len: int = 32) -> str:
     """Trim a label to a maximum length, appending an ellipsis if it exceeds
     the limit."""
-    return label if len(label) <= max_len else label[:max_len] + "…"
+    return label if len(label) <= max_len else label[:max_len].strip() + "…"
 
 
 def get_numeric_axes(ax: plt.Axes) -> str:
