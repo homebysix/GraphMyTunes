@@ -38,14 +38,17 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     album_stats["avg_rating_stars"] = album_stats["avg_rating"] / 20
 
     # Get top N albums by average rating
-    window = album_stats.sort_values("avg_rating_stars", ascending=False).head(
-        params["top"]
+    window = (
+        album_stats.sort_values("avg_rating_stars", ascending=False)
+        .head(params["top"])
+        .copy()
     )
 
     # Create artist: album labels with italicized album names
-    window["Label"] = window.apply(
-        lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
-    )
+    labels = []
+    for _, row in window.iterrows():
+        labels.append(create_artist_album_label(row["Album Artist"], row["Album"]))
+    window["Label"] = labels
 
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
