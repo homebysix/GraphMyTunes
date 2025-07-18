@@ -59,6 +59,9 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     # Calculate average track length
     avg_track_length_sec = tracks_df["Total Time"].mean() / 1000  # assuming ms
 
+    # Calculate average play count
+    avg_play_count = tracks_df["Play Count"].fillna(0).mean()
+
     # Prepare table data
     stats = [
         ["Library Age", sec_to_human_readable(secs_since_first)],
@@ -67,6 +70,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         ["Total Artists", f"{total_artists:,} artists"],
         ["Total Albums", f"{total_albums:,} albums"],
         ["Average Track Length", sec_to_human_readable(avg_track_length_sec)],
+        ["Average Play Count", f"{avg_play_count:.1f} plays"],
         ["First Song Added", first_added.strftime("%A, %B %d, %Y")],
         ["First Song", first_song_name],
         ["Last Song Added", last_added.strftime("%A, %B %d, %Y")],
