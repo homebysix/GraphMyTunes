@@ -94,7 +94,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         ],
     ]
 
-    _, ax = plt.subplots(figsize=(7, 6))
+    _, ax = plt.subplots(figsize=(8, 6))
     ax.axis("off")
     table = ax.table(
         cellText=stats,

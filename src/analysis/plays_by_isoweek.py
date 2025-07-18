@@ -44,7 +44,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     week_labels = [f"W{week:02d}" for week in window.index]
 
     # Set figure width dynamically based on number of columns
-    plt.figure(figsize=(max(6, len(window) * 0.35), 6))
+    plt.figure(figsize=(max(8, len(window) * 0.35), 6))
 
     # Plot the results
     window.plot(

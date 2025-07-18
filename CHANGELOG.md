@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
+- Width of many graphs adjusted from 6 to 8 inches
 - Library overview: Added average track length, average play count, average file size, and total library size
 
 ## 1.0.0 - 2025-07-05

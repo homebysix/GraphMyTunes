@@ -40,7 +40,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     window = df["Hour"].value_counts().reindex(range(24), fill_value=0).sort_index()
 
     # Set figure width dynamically based on number of columns
-    plt.figure(figsize=(max(6, len(window) * 0.35), 6))
+    plt.figure(figsize=(max(8, len(window) * 0.35), 6))
 
     # Get hour format from params (default to 24-hour)
     hour_format = params.get("hour_format", "24")

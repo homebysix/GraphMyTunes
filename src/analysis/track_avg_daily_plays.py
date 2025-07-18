@@ -47,7 +47,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     window["Name (Trimmed)"] = window["Name"].apply(trim_label)
 
     # Set figure height dynamically based on number of rows
-    plt.figure(figsize=(6, max(2, len(window) * 0.35)))
+    plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     # Plot the data
     window[::-1].plot(

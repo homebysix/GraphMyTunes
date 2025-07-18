@@ -21,7 +21,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     play_counts = tracks_df["Play Count"].fillna(0).astype(int)
 
     # Plot the results
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 6))
     plt.hist(
         play_counts,
         bins=range(0, play_counts.max() + 2),

@@ -27,7 +27,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     min_bitrate = filtered_bitrates.min()
     # Define bins (e.g., 16 kbps steps)
     bins = np.arange(min_bitrate, max_bitrate + 16, 16)
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 6))
     plt.hist(
         filtered_bitrates,
         bins=bins,

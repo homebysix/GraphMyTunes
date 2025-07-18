@@ -23,7 +23,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     window = tracks_df.set_index("Play Date UTC").resample("QE").size()
 
     # Set figure width dynamically based on number of columns
-    plt.figure(figsize=(max(6, len(window) * 0.35), 6))
+    plt.figure(figsize=(max(8, len(window) * 0.35), 6))
 
     # Plot the results
     ax = window.plot(

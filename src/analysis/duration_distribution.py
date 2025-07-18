@@ -29,7 +29,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     max_duration = filtered_durations.max()
     bins = np.arange(0, max_duration + 30, 30)
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 6))
     plt.hist(
         filtered_durations,
         bins=bins,
