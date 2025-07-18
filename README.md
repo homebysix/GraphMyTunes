@@ -11,7 +11,7 @@
     - [Step 2: Export your music library to XML](#step-2-export-your-music-library-to-xml)
     - [Step 3: Run GraphMyTunes](#step-3-run-graphmytunes)
 - [Featured Analyses](#featured-analyses)
-- [Limitations and scope](#limitations-and-scope)
+- [Limitations and Scope](#limitations-and-scope)
 - [Support](#support)
 - [Contributing](#contributing)
 - [License](#license)
@@ -92,7 +92,7 @@ GraphMyTunes includes 40+ built-in ways to analyze your music collection, includ
 </div>
 </div>
 
-## Limitations and scope
+## Limitations and Scope
 
 - At this time, GraphMyTunes development is focused around **Apple Music only**. There are likely other solutions that serve those with Spotify, Amazon, Pandora, or Last.fm libraries.
 
