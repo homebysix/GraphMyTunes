@@ -10,9 +10,13 @@ All notable changes to this project will be documented in this file. This projec
 
 - New visualizations that produce word clouds based on names of songs, albums, and artists in your library
 - New visualizations that show the songs, albums, and artists with the highest play-to-skip ratios
-- Width of many graphs adjusted from 6 to 8 inches
 - Library overview: Added average track length, average play count, average file size, and total library size
+
+### Changed
+
+- Width of many graphs adjusted from 6 to 8 inches
 - Album graphs: Now include artist and italicized album name
+- Track graphs: Now include artist and quoted song name
 
 ## 1.0.0 - 2025-07-05
 

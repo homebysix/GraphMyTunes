@@ -38,6 +38,19 @@ def trim_label(label: str, max_len: int = 32) -> str:
     return label if len(label) <= max_len else label[:max_len].strip() + "…"
 
 
+def create_artist_track_label(artist: str, title: str, max_len: int = 32) -> str:
+    """Create a formatted label with artist name followed by quoted track title.
+
+    Args:
+        artist: The artist name
+        title: The track title
+
+    Returns:
+        A formatted string like 'Artist Name: "Track Title"'
+    """
+    return f"{artist}: “{trim_label(title, max_len)}”"
+
+
 def create_artist_album_label(artist: str, album: str, max_len: int = 32) -> str:
     """Create a formatted label with artist name followed by italicized album name, separated by a colon.
 

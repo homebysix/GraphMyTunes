@@ -13,6 +13,7 @@ import pandas as pd
 
 from src.analysis._utils_ import (
     bytes_to_human_readable,
+    create_artist_track_label,
     ensure_columns,
     save_plot,
     sec_to_human_readable,
@@ -50,11 +51,15 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
 
     # Name and artist of first song added
     first_song_row = tracks_df.loc[tracks_df["Date Added"].idxmin()]
-    first_song_name = f'{first_song_row["Artist"]} - {first_song_row["Name"]}'
+    first_song_name = create_artist_track_label(
+        first_song_row["Artist"], first_song_row["Name"]
+    )
 
     # Name and artist of last song added
     last_song_row = tracks_df.loc[tracks_df["Date Added"].idxmax()]
-    last_song_name = f'{last_song_row["Artist"]} - {last_song_row["Name"]}'
+    last_song_name = create_artist_track_label(
+        last_song_row["Artist"], last_song_row["Name"]
+    )
 
     # Calculate average playtime per day since first song added until today
     today = pd.Timestamp(datetime.now())
