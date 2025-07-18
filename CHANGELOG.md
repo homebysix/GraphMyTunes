@@ -6,7 +6,9 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+
+- Library overview: Added average track length
 
 ## 1.0.0 - 2025-07-05
 

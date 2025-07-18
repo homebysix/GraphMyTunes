@@ -56,6 +56,9 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     secs_since_first = (today - first_added).total_seconds()
     avg_playtime_since_first_sec = total_play_time_sec / days_since_first
 
+    # Calculate average track length
+    avg_track_length_sec = tracks_df["Total Time"].mean() / 1000  # assuming ms
+
     # Prepare table data
     stats = [
         ["Library Age", sec_to_human_readable(secs_since_first)],
@@ -63,6 +66,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         ["Rated Tracks", f"{tracks_with_rating:,} tracks"],
         ["Total Artists", f"{total_artists:,} artists"],
         ["Total Albums", f"{total_albums:,} albums"],
+        ["Average Track Length", sec_to_human_readable(avg_track_length_sec)],
         ["First Song Added", first_added.strftime("%A, %B %d, %Y")],
         ["First Song", first_song_name],
         ["Last Song Added", last_added.strftime("%A, %B %d, %Y")],
