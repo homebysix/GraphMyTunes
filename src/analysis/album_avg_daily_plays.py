@@ -10,19 +10,21 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from src.analysis._utils_ import (
+    create_artist_album_label,
     ensure_columns,
     get_today_matching_tz,
     save_plot,
-    trim_label,
 )
 
 
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
-    ensure_columns(tracks_df, ["Play Count", "Date Added", "Album"])
+    ensure_columns(tracks_df, ["Play Count", "Date Added", "Album", "Album Artist"])
 
-    df = tracks_df.dropna(subset=["Play Count", "Date Added", "Album"]).copy()
+    df = tracks_df.dropna(
+        subset=["Play Count", "Date Added", "Album", "Album Artist"]
+    ).copy()
 
     # Convert Play Count to numeric, fill missing values with 0
     df["Play Count"] = (
@@ -31,9 +33,9 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     df["Date Added"] = pd.to_datetime(df["Date Added"], errors="coerce")
     df = df.dropna(subset=["Date Added"])
 
-    # For each album, get the sum of play counts and the earliest date added
+    # For each album, get the sum of play counts, earliest date added, and artist
     album_stats = (
-        df.groupby("Album")
+        df.groupby(["Album", "Album Artist"])
         .agg(
             Total_Play_Count=("Play Count", "sum"),
             Earliest_Date_Added=("Date Added", "min"),
@@ -55,8 +57,10 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         params["top"]
     )
 
-    # Trim long names
-    window["Album (Trimmed)"] = window["Album"].apply(trim_label)
+    # Create artist: album labels with italicized album names
+    window["Label"] = window.apply(
+        lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
+    )
 
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
@@ -64,7 +68,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     # Plot the results
     window[::-1].plot(
         kind="barh",
-        x="Album (Trimmed)",
+        x="Label",
         y="Avg Daily Plays",
         color=plt.get_cmap("tab10").colors,
         edgecolor="black",

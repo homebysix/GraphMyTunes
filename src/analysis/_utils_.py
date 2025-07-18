@@ -36,6 +36,33 @@ def trim_label(label: str, max_len: int = 32) -> str:
     return label if len(label) <= max_len else label[:max_len].strip() + "…"
 
 
+def create_artist_album_label(artist: str, album: str, max_len: int = 32) -> str:
+    """Create a formatted label with artist name followed by italicized album name, separated by a colon.
+
+    Args:
+        artist: The artist name
+        album: The album name
+        max_len: Maximum length for the album name before trimming
+
+    Returns:
+        A formatted string like "Artist Name: Album Name" with proper LaTeX escaping
+    """
+    trimmed_album = trim_label(album, max_len)
+
+    # Simple approach: Only use LaTeX for albums with safe characters
+    # This avoids the complexity of escaping while still providing italics where possible
+    unsafe_chars = set("#&%$_^~\\{}|<>")
+
+    if any(char in unsafe_chars for char in trimmed_album):
+        # For albums with problematic characters, use simple formatting
+        return f"{artist}: {trimmed_album}"
+    else:
+        # For safe albums, use LaTeX italics
+        # Replace spaces with LaTeX spacing
+        safe_album = trimmed_album.replace(" ", "\\ ")
+        return f"{artist}: $\\mathit{{{safe_album}}}$"
+
+
 def get_numeric_axes(ax: plt.Axes) -> str:
     """Return "x" if x-axis is numeric, "y" otherwise."""
 
@@ -71,6 +98,10 @@ def save_plot(title: str, output_path: str, ext: str = "png", dpi: int = 300) ->
     plt.rcParams["axes.labelsize"] = 10
     plt.rcParams["axes.titlesize"] = 14
     plt.rcParams["axes.titleweight"] = "bold"
+
+    # Configure matplotlib to handle LaTeX math text properly
+    plt.rcParams["mathtext.default"] = "regular"
+    plt.rcParams["mathtext.fontset"] = "dejavusans"
 
     # Set the plot title and style
     plt.suptitle(

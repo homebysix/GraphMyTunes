@@ -11,20 +11,20 @@ from typing import Any, Dict
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, trim_label
+from src.analysis._utils_ import create_artist_album_label, ensure_columns, save_plot
 
 
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
-    ensure_columns(tracks_df, ["Rating", "Album"])
+    ensure_columns(tracks_df, ["Rating", "Album", "Album Artist"])
 
     # Convert Rating to numeric, fill missing values with 0
     tracks_df["Rating"] = tracks_df["Rating"].fillna(0)
 
-    # Group by album, calculate average rating and track count
+    # Group by album and album artist, calculate average rating and track count
     album_stats = (
-        tracks_df.groupby("Album")
+        tracks_df.groupby(["Album", "Album Artist"])
         .agg(avg_rating=("Rating", "mean"), track_count=("Rating", "count"))
         .reset_index()
     )
@@ -42,8 +42,10 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         params["top"]
     )
 
-    # Trim long names
-    window["Album (Trimmed)"] = window["Album"].apply(trim_label)
+    # Create artist: album labels with italicized album names
+    window["Label"] = window.apply(
+        lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
+    )
 
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
@@ -62,7 +64,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     else:
         window.plot(
             kind="barh",
-            x="Album (Trimmed)",
+            x="Label",
             y="avg_rating_stars",
             color=plt.get_cmap("tab10").colors,
             edgecolor="black",
