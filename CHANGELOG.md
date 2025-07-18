@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 
+- New visualizations that produce word clouds based on names of songs, albums, or artists in your library
 - Width of many graphs adjusted from 6 to 8 inches
 - Library overview: Added average track length, average play count, average file size, and total library size
 - Album graphs: Now include artist and italicized album name

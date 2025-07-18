@@ -8,11 +8,13 @@ import matplotlib
 # Use the 'Agg' backend for non-GUI rendering
 matplotlib.use("Agg")
 import os
-from typing import List
+import re
+from typing import Any, Dict, List
 
 # flake8: noqa: E402
 import matplotlib.pyplot as plt
 import pandas as pd
+from wordcloud import WordCloud
 
 from src import __version__
 
@@ -194,3 +196,37 @@ def bytes_to_human_readable(bytes_val):
         return f"{bytes_val / 1024:.1f} KB"
     else:
         return f"{bytes_val:.0f} bytes"
+
+
+def create_wordcloud(
+    text: pd.Series, stopwords: set, params: Dict[str, Any]
+) -> WordCloud:
+    """Create a WordCloud object from the given text and stopwords."""
+
+    # Remove duplicates
+    unique_titles = text.drop_duplicates()
+
+    # Combine all titles into one text string
+    all_titles_text = " ".join(unique_titles)
+
+    # Clean the text: remove extra whitespace and convert to lowercase
+    all_titles_text = re.sub(r"\s+", " ", all_titles_text.lower().strip())
+
+    # Create the word cloud
+    max_words = params.get("max_words", 200)
+    wordcloud = WordCloud(
+        width=1200,
+        height=600,
+        background_color="white",
+        stopwords=stopwords,
+        max_words=max_words,
+        colormap="plasma",
+        relative_scaling=0.5,
+        min_font_size=10,
+        max_font_size=100,
+        prefer_horizontal=0.9,
+        collocations=False,  # Don't group words together
+        normalize_plurals=False,  # Keep plurals as separate words
+    ).generate(all_titles_text)
+
+    return wordcloud
