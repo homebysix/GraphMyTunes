@@ -151,3 +151,15 @@ def sec_to_human_readable(secs: int) -> str:
         parts.append("0s")
 
     return " ".join(parts)
+
+
+def bytes_to_human_readable(bytes_val):
+    """Convert bytes to a human-readable format."""
+    if bytes_val >= 1024**3:  # GB
+        return f"{bytes_val / (1024**3):.1f} GB"
+    elif bytes_val >= 1024**2:  # MB
+        return f"{bytes_val / (1024**2):.1f} MB"
+    elif bytes_val >= 1024:  # KB
+        return f"{bytes_val / 1024:.1f} KB"
+    else:
+        return f"{bytes_val:.0f} bytes"

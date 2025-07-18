@@ -11,7 +11,12 @@ from typing import Any, Dict
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, sec_to_human_readable
+from src.analysis._utils_ import (
+    bytes_to_human_readable,
+    ensure_columns,
+    save_plot,
+    sec_to_human_readable,
+)
 
 
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
@@ -25,6 +30,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         "Total Time",
         "Date Added",
         "Play Count",
+        "Size",
     ]
     ensure_columns(tracks_df, required_columns)
 
@@ -62,15 +68,21 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     # Calculate average play count
     avg_play_count = tracks_df["Play Count"].fillna(0).mean()
 
+    # Calculate average file size and total library size
+    avg_file_size_bytes = tracks_df["Size"].mean()
+    total_library_size_bytes = tracks_df["Size"].sum()
+
     # Prepare table data
     stats = [
         ["Library Age", sec_to_human_readable(secs_since_first)],
+        ["Total Library Size", bytes_to_human_readable(total_library_size_bytes)],
         ["Total Tracks", f"{total_tracks:,} tracks"],
         ["Rated Tracks", f"{tracks_with_rating:,} tracks"],
         ["Total Artists", f"{total_artists:,} artists"],
         ["Total Albums", f"{total_albums:,} albums"],
         ["Average Track Length", sec_to_human_readable(avg_track_length_sec)],
         ["Average Play Count", f"{avg_play_count:.1f} plays"],
+        ["Average File Size", bytes_to_human_readable(avg_file_size_bytes)],
         ["First Song Added", first_added.strftime("%A, %B %d, %Y")],
         ["First Song", first_song_name],
         ["Last Song Added", last_added.strftime("%A, %B %d, %Y")],
@@ -82,7 +94,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         ],
     ]
 
-    _, ax = plt.subplots(figsize=(7, 4))
+    _, ax = plt.subplots(figsize=(7, 6))
     ax.axis("off")
     table = ax.table(
         cellText=stats,
