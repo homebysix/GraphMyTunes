@@ -63,11 +63,11 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
         params["top"]
     )
 
-    # Trim long names for top artists
-    window["Artist"] = window["Artist"].apply(trim_label)
-
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
+
+    # Trim artist names for better readability
+    window["Artist"] = window["Artist"].apply(trim_label)
 
     window[::-1].plot(
         kind="barh",

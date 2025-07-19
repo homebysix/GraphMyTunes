@@ -10,7 +10,12 @@ from typing import Any
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, setup_analysis_logging
+from src.analysis._utils_ import (
+    ensure_columns,
+    save_plot,
+    setup_analysis_logging,
+    trim_label,
+)
 
 
 def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
@@ -29,6 +34,9 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     df["Play Count"] = (
         pd.to_numeric(df["Play Count"], errors="coerce").fillna(0).astype(int)
     )
+
+    # Trim artist names for better readability
+    df["Artist"] = df["Artist"].apply(trim_label)
 
     # Sum play count by artist and limit to top N
     window = (

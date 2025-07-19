@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. This projec
 - Clarified and corrected axis labels on many graphs
 - Album and track word clouds: Added more stop words
 - Further automations and improvements to release process
+- Artist graphs: Consistently trim long artist names
 
 ## [1.1.0] - 2025-07-19
 

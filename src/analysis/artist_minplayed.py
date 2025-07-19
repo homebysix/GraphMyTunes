@@ -13,7 +13,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, setup_analysis_logging
+from src.analysis._utils_ import (
+    ensure_columns,
+    save_plot,
+    setup_analysis_logging,
+    trim_label,
+)
 
 
 def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
@@ -58,6 +63,9 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
         count = (non_zero_plays >= n).sum()
         percentage = (count / total_artists) * 100
         y_values.append(percentage)
+
+    # Trim artist names for better readability
+    df["Artist"] = df["Artist"].apply(trim_label)
 
     # Create the bar chart
     plt.figure(figsize=(8, 6))

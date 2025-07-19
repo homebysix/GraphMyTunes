@@ -11,7 +11,12 @@ from typing import Any
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, setup_analysis_logging
+from src.analysis._utils_ import (
+    ensure_columns,
+    save_plot,
+    setup_analysis_logging,
+    trim_label,
+)
 
 
 def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
@@ -64,6 +69,9 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
 
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
+
+    # Trim artist names for better readability
+    window["Artist"] = window["Artist"].apply(trim_label)
 
     # Plot the data
     window.plot(
