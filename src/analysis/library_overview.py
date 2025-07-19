@@ -6,8 +6,9 @@ last songs added, and average playtime per day over the age of the library.
 """
 
 import logging
+import os
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -22,11 +23,12 @@ from src.analysis._utils_ import (
 )
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
     # Set up logging for this analysis process
     setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
 
     # Ensure required columns exist
     required_columns = [
@@ -40,8 +42,6 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     ]
     ensure_columns(tracks_df, required_columns)
 
-    logging.debug("Required columns verified: %s", required_columns)
-
     # Calculate stats
     total_tracks = len(tracks_df)
     total_artists = tracks_df["Artist"].nunique()
@@ -52,7 +52,6 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     tracks_with_rating = (
         tracks_df["Rating"].notnull().sum() if "Rating" in tracks_df.columns else 0
     )
-
     logging.debug(
         "Basic stats calculated - tracks: %d, artists: %d, albums: %d",
         total_tracks,
@@ -67,7 +66,6 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
 
     first_added = tracks_df["Date Added"].min()
     last_added = tracks_df["Date Added"].max()
-
     logging.debug("Date range: %s to %s", first_added, last_added)
 
     # Name and artist of first song added
@@ -75,14 +73,13 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     first_song_name = create_artist_track_label(
         first_song_row["Artist"], first_song_row["Name"]
     )
+    logging.debug("First song added: %s", first_song_name)
 
     # Name and artist of last song added
     last_song_row = tracks_df.loc[tracks_df["Date Added"].idxmax()]
     last_song_name = create_artist_track_label(
         last_song_row["Artist"], last_song_row["Name"]
     )
-
-    logging.debug("First song added: %s", first_song_name)
     logging.debug("Last song added: %s", last_song_name)
 
     # Calculate average playtime per day since first song added until today

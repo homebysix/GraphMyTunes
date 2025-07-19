@@ -4,7 +4,9 @@ Graph the cumulative count of all tracks in the library over time, based
 on the 'Date Added' field.
 """
 
-from typing import Any, Dict
+import logging
+import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -12,11 +14,12 @@ import pandas as pd
 from src.analysis._utils_ import ensure_columns, save_plot, setup_analysis_logging
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
     # Set up logging for this analysis process
     setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
 
     # Ensure required columns exist
     ensure_columns(tracks_df, ["Date Added"])

@@ -6,7 +6,9 @@ top N by average rating, omitting albums with an average rating of
 zero. Assumes iTunes ratings are 0-100 and converts to 0-5 stars.
 """
 
-from typing import Any, Dict
+import logging
+import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -19,11 +21,12 @@ from src.analysis._utils_ import (
 )
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
     # Set up logging for this analysis process
     setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
 
     # Ensure required columns exist
     ensure_columns(tracks_df, ["Rating", "Album", "Album Artist"])

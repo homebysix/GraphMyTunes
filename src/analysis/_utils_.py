@@ -4,6 +4,7 @@ Utility functions for GraphMyTunes analysis modules.
 """
 
 import logging
+import os
 
 import matplotlib
 
@@ -11,7 +12,7 @@ import matplotlib
 matplotlib.use("Agg")
 import os
 import re
-from typing import Any, Dict, List
+from typing import Any, List
 
 # flake8: noqa: E402
 import matplotlib.pyplot as plt
@@ -38,7 +39,7 @@ def setup_analysis_logging(debug: bool = False) -> None:
     logging.getLogger("matplotlib.font_manager").setLevel(logging.WARNING)
 
 
-def ensure_columns(df: pd.DataFrame, columns: List[str]) -> None:
+def ensure_columns(df: pd.DataFrame, columns: list[str]) -> None:
     """Ensure the DataFrame contains the specified columns."""
     missing = [col for col in columns if col not in df.columns]
     if missing:
@@ -100,7 +101,7 @@ def create_artist_album_label(artist: str, album: str, max_len: int = 32) -> str
 def get_numeric_axes(ax: plt.Axes) -> str:
     """Return "x" if x-axis is numeric, "y" otherwise."""
 
-    def is_numeric(tick_labels: List[plt.Text]) -> bool:
+    def is_numeric(tick_labels: list[plt.Text]) -> bool:
         """Check if the first tick label of a given axis is numeric."""
         if not tick_labels:
             return False
@@ -231,7 +232,7 @@ def bytes_to_human_readable(bytes_val):
 
 
 def create_wordcloud(
-    text: pd.Series, stopwords: set, params: Dict[str, Any]
+    text: pd.Series, stopwords: set, params: dict[str, Any]
 ) -> WordCloud:
     """Create a WordCloud object from the given text and stopwords."""
 
