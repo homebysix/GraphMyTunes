@@ -119,10 +119,11 @@ def create_tag(version_num):
             ["git", "branch", "--show-current"], text=True
         ).strip()
         if current_branch != "main":
-            print(f"Warning: Currently on branch '{current_branch}', not 'main'")
-            response = input("Continue anyway? (y/N): ")
-            if response.lower() != "y":
-                return False
+            print(
+                f"Error: Currently on branch '{current_branch}', but releases should be made from 'main'"
+            )
+            print("Please merge changes to main branch and try again.")
+            return False
     except subprocess.CalledProcessError:
         print("Error: Could not determine current git branch")
         return False

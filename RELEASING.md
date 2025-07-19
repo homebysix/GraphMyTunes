@@ -4,6 +4,8 @@ New versions of GraphMyTunes can be published as follows.
 
 ## Step 1: Local preparation
 
+1. Ensure all development work is complete and committed on the `dev` branch.
+
 1. Ensure the CHANGELOG.md has been updated with version-specific release notes in [keep-a-changelog format](https://keepachangelog.com/).
 
 1. Run pre-commit hooks and unit tests and fix any errors:
@@ -20,6 +22,8 @@ New versions of GraphMyTunes can be published as follows.
 
         .venv/bin/python -m pip install -e . --force-reinstall
         .venv/bin/graphmytunes --version
+
+1. [Merge the dev branch to main](https://github.com/homebysix/GraphMyTunes/compare/dev?expand=1) on GitHub.
 
 ## Step 2: Publish to TestPyPI
 
