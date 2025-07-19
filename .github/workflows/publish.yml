@@ -1,4 +1,4 @@
-name: Publish to PyPI
+name: Publish to PyPI and Create Release
 
 on:
   push:
@@ -20,20 +20,13 @@ jobs:
   test-and-build:
     uses: ./.github/workflows/test-and-build.yml
 
+  # Always publish to TestPyPI first for all tagged versions
   publish-testpypi:
     needs: test-and-build
     runs-on: ubuntu-latest
     if: |
-      (
-        github.event_name == 'push' &&
-        startsWith(github.ref, 'refs/tags/v') &&
-        (contains(github.ref, 'a') ||
-         contains(github.ref, 'b') ||
-         contains(github.ref, 'rc'))
-      ) || (
-        github.event_name == 'workflow_dispatch' &&
-        github.event.inputs.target == 'testpypi'
-      )
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'testpypi')
     environment: testpypi
 
     steps:
@@ -50,20 +43,39 @@ jobs:
         password: ${{ secrets.TESTPYPI_API_TOKEN }}
         verbose: true
 
+    - name: Comment on PR/Issue (if from tag push)
+      if: github.event_name == 'push'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const tagName = context.ref.replace('refs/tags/', '');
+          const isPrerelease = tagName.includes('a') || tagName.includes('b') || tagName.includes('rc');
+
+          const message = isPrerelease ?
+            `🚀 **Pre-release ${tagName}** published to [TestPyPI](https://test.pypi.org/project/graphmytunes/)!
+
+            **⚠️ Pre-release Testing Required:**
+            1. Test the package: \`pip install -i https://test.pypi.org/simple/ graphmytunes==${tagName.replace('v', '')}\`
+            2. Verify functionality thoroughly before promoting to PyPI
+            3. If tests pass, manually trigger the PyPI workflow to publish to production` :
+            `✅ **Release ${tagName}** published to [TestPyPI](https://test.pypi.org/project/graphmytunes/)!
+
+            **Ready for Production:**
+            1. Verify package: \`pip install -i https://test.pypi.org/simple/ graphmytunes==${tagName.replace('v', '')}\`
+            2. Once confirmed working, manually trigger PyPI publication`;
+
+          github.rest.repos.createCommitComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+            body: message
+          });
+
+  # Only publish to PyPI via manual workflow dispatch (after TestPyPI verification)
   publish-pypi:
     needs: test-and-build
     runs-on: ubuntu-latest
-    if: |
-      (
-        github.event_name == 'push' &&
-        startsWith(github.ref, 'refs/tags/v') &&
-        !contains(github.ref, 'a') &&
-        !contains(github.ref, 'b') &&
-        !contains(github.ref, 'rc')
-      ) || (
-        github.event_name == 'workflow_dispatch' &&
-        github.event.inputs.target == 'pypi'
-      )
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'pypi'
     environment: pypi
 
     steps:
@@ -79,15 +91,33 @@ jobs:
         password: ${{ secrets.PYPI_API_TOKEN }}
         verbose: true
 
+    - name: Success notification
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const tagName = process.env.GITHUB_REF?.replace('refs/tags/', '') || 'manual-release';
+
+          github.rest.repos.createCommitComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+            body: `🎉 **Successfully published to PyPI!**
+
+            Package is now available: \`pip install graphmytunes\`
+
+            ${tagName.startsWith('v') ? `Version: ${tagName}` : 'Manual deployment completed'}
+
+            [View on PyPI](https://pypi.org/project/graphmytunes/)`
+          });
+
+  # Create GitHub release only after successful PyPI publication
   create-release:
     needs: [test-and-build, publish-pypi]
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'push' &&
-      startsWith(github.ref, 'refs/tags/v') &&
-      !contains(github.ref, 'a') &&
-      !contains(github.ref, 'b') &&
-      !contains(github.ref, 'rc')
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.target == 'pypi' &&
+      startsWith(github.ref, 'refs/tags/v')
 
     steps:
     - uses: actions/checkout@v4
@@ -96,6 +126,42 @@ jobs:
       id: version
       run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
+    - name: Extract release notes from CHANGELOG.md
+      id: changelog
+      run: |
+        VERSION="${{ steps.version.outputs.version }}"
+
+        # Extract the section for this version from CHANGELOG.md
+        # Look for the version header and extract content until the next version or end
+        awk -v version="$VERSION" '
+        BEGIN { found=0; recording=0 }
+        /^## \[/ {
+          if (found && recording) exit  # Stop at next version section
+          if ($0 ~ "\\[" version "\\]") {
+            found=1
+            recording=1
+            next  # Skip the version header itself
+          }
+        }
+        /^## / && recording { exit }  # Stop at any other ## header after we started recording
+        recording && !/^$/ { print }  # Print non-empty lines while recording
+        recording && /^$/ && getline && !/^$/ { print ""; print }  # Handle paragraph breaks
+        ' CHANGELOG.md > release_notes.txt
+
+        # If no specific version found, create a generic message
+        if [ ! -s release_notes.txt ]; then
+          echo "Release $VERSION" > release_notes.txt
+          echo "" >> release_notes.txt
+          echo "See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details." >> release_notes.txt
+        fi
+
+        # Set the changelog content as output (encode newlines for GitHub Actions)
+        {
+          echo 'RELEASE_NOTES<<EOF'
+          cat release_notes.txt
+          echo EOF
+        } >> $GITHUB_OUTPUT
+
     - name: Create GitHub Release
       uses: actions/create-release@v1
       env:
@@ -103,9 +169,6 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release v${{ steps.version.outputs.version }}
-        body: |
-          Release v${{ steps.version.outputs.version }}
-
-          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+        body: ${{ steps.changelog.outputs.RELEASE_NOTES }}
         draft: false
         prerelease: false
