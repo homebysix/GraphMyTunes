@@ -62,6 +62,40 @@ def get_current_version():
     return match.group(1)
 
 
+def get_init_version():
+    """Read current version from src/__init__.py."""
+    init_path = Path("src/__init__.py")
+    if not init_path.exists():
+        print("Warning: src/__init__.py not found")
+        return None
+
+    content = init_path.read_text(encoding="utf-8")
+    match = re.search(r'__version__\s*=\s*"([^"]+)"', content)
+    if not match:
+        print("Warning: Could not find __version__ in src/__init__.py")
+        return None
+
+    return match.group(1)
+
+
+def validate_version_consistency():
+    """Validate that versions in pyproject.toml and __init__.py match."""
+    pyproject_version = get_current_version()
+    init_version = get_init_version()
+
+    if init_version is None:
+        return True  # Skip validation if __init__.py not found or no version
+
+    if pyproject_version != init_version:
+        print("Error: Version mismatch!")
+        print(f"  pyproject.toml: {pyproject_version}")
+        print(f"  src/__init__.py: {init_version}")
+        print("Please update both files to have the same version.")
+        return False
+
+    return True
+
+
 def validate_version_sequence(current_version, new_version):
     """Validate that new version is greater than current version."""
     try:
@@ -98,17 +132,27 @@ def check_changelog_updated(new_version):
 
 
 def update_version(new_version):
-    """Update version in pyproject.toml."""
+    """Update version in both pyproject.toml and src/__init__.py."""
+    # Update pyproject.toml
     pyproject_path = Path("pyproject.toml")
     content = pyproject_path.read_text(encoding="utf-8")
-
-    # Replace version
     updated_content = re.sub(
         r'version\s*=\s*"[^"]+"', f'version = "{new_version}"', content
     )
-
     pyproject_path.write_text(updated_content, encoding="utf-8")
     print(f"Updated version to {new_version} in pyproject.toml")
+
+    # Update src/__init__.py if it exists
+    init_path = Path("src/__init__.py")
+    if init_path.exists():
+        init_content = init_path.read_text(encoding="utf-8")
+        updated_init_content = re.sub(
+            r'__version__\s*=\s*"[^"]+"', f'__version__ = "{new_version}"', init_content
+        )
+        init_path.write_text(updated_init_content, encoding="utf-8")
+        print(f"Updated version to {new_version} in src/__init__.py")
+    else:
+        print("Warning: src/__init__.py not found, skipping version update")
 
 
 def create_tag(version_num):
@@ -179,6 +223,10 @@ def main():
         print(
             "Error: Invalid version format. Use format like 1.0.0, 1.0.0a1, 1.0.0b1, or 1.0.0rc1"
         )
+        sys.exit(1)
+
+    # Validate version consistency between files
+    if not validate_version_consistency():
         sys.exit(1)
 
     # Validate version sequence
