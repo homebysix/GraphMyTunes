@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased]
 
+### Added
+
+- New visualization that shows total play time per star rating
+
 ### Changed
 
 - Clarified and corrected axis labels on many graphs
