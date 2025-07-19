@@ -1,0 +1,23 @@
+[run]
+# Source directories to measure
+source = src
+
+# Omit files/directories from coverage
+omit =
+    tests/*
+    venv/*
+    build/*
+    dist/*
+    *.egg-info/*
+
+[report]
+# Exclude specific line patterns
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
+    raise NotImplementedError
+    matplotlib\.use
+
+[html]
+# Directory for HTML coverage reports
+directory = htmlcov

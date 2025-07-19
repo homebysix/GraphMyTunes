@@ -3,39 +3,53 @@
 Show the total skip count for all tracks in each album.
 """
 
-from typing import Any, Dict
+import logging
+import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, trim_label
+from src.analysis._utils_ import (
+    create_artist_album_label,
+    ensure_columns,
+    save_plot,
+    setup_analysis_logging,
+)
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
-    ensure_columns(tracks_df, ["Album", "Skip Count"])
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
 
-    df = tracks_df.dropna(subset=["Album", "Skip Count"]).copy()
+    # Ensure required columns exist
+    ensure_columns(tracks_df, ["Album", "Album Artist", "Skip Count"])
+
+    df = tracks_df.dropna(subset=["Album", "Album Artist", "Skip Count"]).copy()
 
     # Convert Skip Count to numeric, fill missing values with 0
     df["Skip Count"] = (
         pd.to_numeric(df["Skip Count"], errors="coerce").fillna(0).astype(int)
     )
 
-    # Trim long names
-    df["Album (Trimmed)"] = df["Album"].apply(trim_label)
+    # Create artist: album labels with italicized album names
+    df["Label"] = df.apply(
+        lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
+    )
 
-    # Sum skip count by trimmed album and get top N
+    # Sum skip count by label and get top N
     window = (
-        df.groupby("Album (Trimmed)")["Skip Count"]
+        df.groupby("Label")["Skip Count"]
         .sum()
         .sort_values(ascending=True)
         .tail(params["top"])
     )
 
     # Set figure height dynamically based on number of rows
-    plt.figure(figsize=(6, max(2, len(window) * 0.35)))
+    plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     # Plot the data
     window.plot(

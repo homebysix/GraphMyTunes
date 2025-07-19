@@ -4,17 +4,24 @@ Show the total play time (duration x play count) for all tracks in each
 genre. Duration is assumed to be in milliseconds (iTunes 'Total Time').
 """
 
-from typing import Any, Dict
+import logging
+import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot
+from src.analysis._utils_ import ensure_columns, save_plot, setup_analysis_logging
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
+
+    # Ensure required columns exist
     ensure_columns(tracks_df, ["Genre", "Play Count", "Total Time"])
 
     df = tracks_df.dropna(subset=["Genre", "Play Count", "Total Time"]).copy()
@@ -41,7 +48,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     )
 
     # Set figure height dynamically based on number of rows
-    plt.figure(figsize=(6, max(2, len(window) * 0.35)))
+    plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     # Plot the data
     window.plot(

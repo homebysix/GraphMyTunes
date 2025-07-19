@@ -1,7 +1,7 @@
-"""track_avg_daily_plays.py
+"""track_skip_ratio.py
 
-Graph the top N tracks based on average daily plays:
-Play Count divided by number of days the track has been in the library (today minus 'Date Added').
+Show the top N tracks by highest ratio of skips to plays.
+Tracks with zero plays are excluded. Tracks with zero skips have a ratio of 0.
 """
 
 import logging
@@ -14,7 +14,6 @@ import pandas as pd
 from src.analysis._utils_ import (
     create_artist_track_label,
     ensure_columns,
-    get_today_matching_tz,
     save_plot,
     setup_analysis_logging,
 )
@@ -28,50 +27,53 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     logging.debug("Starting %s analysis", os.path.basename(__file__))
 
     # Ensure required columns exist
-    ensure_columns(tracks_df, ["Play Count", "Date Added", "Name", "Artist"])
+    ensure_columns(tracks_df, ["Name", "Artist", "Play Count", "Skip Count"])
 
-    df = tracks_df.dropna(subset=["Play Count", "Date Added", "Name", "Artist"]).copy()
+    df = tracks_df.dropna(subset=["Name", "Artist", "Play Count", "Skip Count"]).copy()
 
-    # Convert Play Count to numeric, fill missing values with 0
+    # Convert Play Count and Skip Count to numeric, fill missing values with 0
     df["Play Count"] = (
         pd.to_numeric(df["Play Count"], errors="coerce").fillna(0).astype(int)
     )
-
-    # Convert Date Added to datetime, skip missing values
-    df["Date Added"] = pd.to_datetime(df["Date Added"], errors="coerce")
-    df = df.dropna(subset=["Date Added"])
-
-    today = get_today_matching_tz(df["Date Added"])
-
-    df["Days In Library"] = (today - df["Date Added"].dt.floor("D")).dt.days.clip(
-        lower=1
+    df["Skip Count"] = (
+        pd.to_numeric(df["Skip Count"], errors="coerce").fillna(0).astype(int)
     )
-    df["Avg Daily Plays"] = df["Play Count"] / df["Days In Library"]
 
-    # Get top N tracks by average daily plays
-    window = df.sort_values("Avg Daily Plays", ascending=False).head(params["top"])
+    # Only consider tracks that have been played at least once
+    df = df[df["Play Count"] > 0]
+
+    # Calculate skip-to-play ratio
+    # For tracks with 0 skips, the ratio is 0
+    # For tracks with skips, use the actual ratio
+    df["Skip Ratio"] = df["Skip Count"] / df["Play Count"]
+
+    # Get top N tracks by skip ratio
+    window = df.nlargest(params["top"], "Skip Ratio")
 
     # Create artist: track labels
     window["Track Label"] = window.apply(
         lambda row: create_artist_track_label(row["Artist"], row["Name"]), axis=1
     )
 
+    # Sort by ratio ascending for horizontal bar chart (lowest at bottom)
+    window = window.sort_values("Skip Ratio", ascending=True)
+
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     # Plot the data
-    window[::-1].plot(
+    window.plot(
         kind="barh",
         x="Track Label",
-        y="Avg Daily Plays",
+        y="Skip Ratio",
         color=plt.get_cmap("tab10").colors,
         edgecolor="black",
         legend=False,
         ax=plt.gca(),
     )
-    plt.xlabel("Average Daily Plays")
+    plt.xlabel("Skip-to-Play Ratio")
     plt.ylabel("Track")
-    title = f"Top {params['top']} Tracks by Average Daily Plays"
+    title = f"Top {params['top']} Tracks by Skip-to-Play Ratio"
     save_plot(title, output_path, ext="png", dpi=300)
 
     return f"{output_path}.png"

@@ -11,7 +11,7 @@
     - [Step 2: Export your music library to XML](#step-2-export-your-music-library-to-xml)
     - [Step 3: Run GraphMyTunes](#step-3-run-graphmytunes)
 - [Featured Analyses](#featured-analyses)
-- [Limitations and scope](#limitations-and-scope)
+- [Limitations and Scope](#limitations-and-scope)
 - [Support](#support)
 - [Contributing](#contributing)
 - [License](#license)
@@ -24,7 +24,7 @@
 
 ## Requirements
 
-- **Apple Music app** for Mac or Windows
+- **Apple Music app** for Mac
 - **Python** (tested primarily with 3.13, but probably works fine with 3.9 and higher)
 
 ## Quick Start
@@ -33,18 +33,22 @@ Follow these 3 steps to get started analyzing your music library.
 
 ### Step 1: Install Python and GraphMyTunes
 
-1. [Download](https://www.python.org/downloads/) and install Python for Mac or Windows.
+1. [Download](https://www.python.org/downloads/) and install Python.
 1. Use pip to install GraphMyTunes:
 
         pip install GraphMyTunes
 
 ### Step 2: Export your music library to XML
 
-1. In the Apple Music app, choose **File > Library > Export Library**.
+1. In the Apple Music app for Mac, choose **File > Library > Export Library**.
+
+    > [!NOTE]
+    > **Note:** Unfortunately, this option is not available in the Windows version of Apple Music.
+
 1. Save the XML file to a convenient location.
 
-> [!TIP]
-> **Tip:** I use a date-based filename like `2025-07-05.xml` so that I can save multiple snapshots of my library over time.
+    > [!TIP]
+    > **Tip:** I use a date-based filename like `2025-07-05.xml` so that I can save multiple snapshots of my library over time.
 
 ### Step 3: Run GraphMyTunes
 
@@ -54,12 +58,12 @@ Follow these 3 steps to get started analyzing your music library.
 
 1. When processing is complete, view your graphs in the folder you specified in `--output`.
 
-> [!TIP]
-> **Tip:** If you don't specify an output folder, GraphMyTunes will save your graphs alongside the xml file you provided.
+    > [!TIP]
+    > **Tip:** If you don't specify an output folder, GraphMyTunes will save your graphs alongside the xml file you provided.
 
 ## Featured Analyses
 
-GraphMyTunes includes 40+ built-in ways to analyze your music collection, including but not limited to:
+GraphMyTunes includes 50+ built-in ways to analyze your music collection, including but not limited to:
 
 <div style="display: flex; flex-wrap: wrap; gap: 2em;">
 <div style="flex: 1 1 300px; min-width: 250px;">
@@ -88,13 +92,15 @@ GraphMyTunes includes 40+ built-in ways to analyze your music collection, includ
 </div>
 </div>
 
-## Limitations and scope
+## Limitations and Scope
 
 - At this time, GraphMyTunes development is focused around **Apple Music only**. There are likely other solutions that serve those with Spotify, Amazon, Pandora, or Last.fm libraries.
 
 - GraphMyTunes is **limited by the metadata exported by the Music app.** Specifically, the exported XML does not include every date/time you played a track; it only includes the _most recent_ play date/time. Therefore, GraphMyTunes will not be able to surface some listening trends (for example, finding songs you used to listen to a lot but now listen to infrequently).
 
 - GraphMyTunes **does not include single-metric metadata rankings that can easily be done in the Music app itself** (for example, listing the top tracks by play count). If you want these, go to the Music app's "Songs" view, adjust the view options to include the desired columns, and sort ascending or descending by that column. GraphMyTunes aims to provide ways to aggregate or group data in ways that the Music app cannot do.
+
+- Although GraphMyTunes should run on Windows, there is no option to export the library as an XML file in the Windows version of Apple Music.
 
 ## Support
 

@@ -6,25 +6,37 @@ top N by average rating, omitting albums with an average rating of
 zero. Assumes iTunes ratings are 0-100 and converts to 0-5 stars.
 """
 
-from typing import Any, Dict
+import logging
+import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot, trim_label
+from src.analysis._utils_ import (
+    create_artist_album_label,
+    ensure_columns,
+    save_plot,
+    setup_analysis_logging,
+)
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
-    ensure_columns(tracks_df, ["Rating", "Album"])
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
+
+    # Ensure required columns exist
+    ensure_columns(tracks_df, ["Rating", "Album", "Album Artist"])
 
     # Convert Rating to numeric, fill missing values with 0
     tracks_df["Rating"] = tracks_df["Rating"].fillna(0)
 
-    # Group by album, calculate average rating and track count
+    # Group by album and album artist, calculate average rating and track count
     album_stats = (
-        tracks_df.groupby("Album")
+        tracks_df.groupby(["Album", "Album Artist"])
         .agg(avg_rating=("Rating", "mean"), track_count=("Rating", "count"))
         .reset_index()
     )
@@ -38,15 +50,20 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     album_stats["avg_rating_stars"] = album_stats["avg_rating"] / 20
 
     # Get top N albums by average rating
-    window = album_stats.sort_values("avg_rating_stars", ascending=False).head(
-        params["top"]
+    window = (
+        album_stats.sort_values("avg_rating_stars", ascending=False)
+        .head(params["top"])
+        .copy()
     )
 
-    # Trim long names
-    window["Album (Trimmed)"] = window["Album"].apply(trim_label)
+    # Create artist: album labels with italicized album names
+    labels = []
+    for _, row in window.iterrows():
+        labels.append(create_artist_album_label(row["Album Artist"], row["Album"]))
+    window["Label"] = labels
 
     # Set figure height dynamically based on number of rows
-    plt.figure(figsize=(6, max(2, len(window) * 0.35)))
+    plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     # Plot the data, if there is data to plot
     if window.empty:
@@ -62,7 +79,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     else:
         window.plot(
             kind="barh",
-            x="Album (Trimmed)",
+            x="Label",
             y="avg_rating_stars",
             color=plt.get_cmap("tab10").colors,
             edgecolor="black",

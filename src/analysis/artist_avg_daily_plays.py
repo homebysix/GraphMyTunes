@@ -4,7 +4,9 @@ Graph the top N artists based on average daily plays:
 Sum of Play Count per artist divided by number of days since the earliest 'Date Added' for any track by the artist.
 """
 
-from typing import Any, Dict
+import logging
+import os
+from typing import Any
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -13,13 +15,19 @@ from src.analysis._utils_ import (
     ensure_columns,
     get_today_matching_tz,
     save_plot,
+    setup_analysis_logging,
     trim_label,
 )
 
 
-def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
+def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+    logging.debug("Starting %s analysis", os.path.basename(__file__))
+
+    # Ensure required columns exist
     ensure_columns(tracks_df, ["Play Count", "Date Added", "Artist"])
 
     df = tracks_df.dropna(subset=["Play Count", "Date Added", "Artist"]).copy()
@@ -59,7 +67,7 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     window["Artist (Trimmed)"] = window["Artist"].apply(trim_label)
 
     # Set figure height dynamically based on number of rows
-    plt.figure(figsize=(6, max(2, len(window) * 0.35)))
+    plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     window[::-1].plot(
         kind="barh",

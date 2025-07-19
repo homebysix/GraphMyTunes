@@ -3,21 +3,43 @@
 Utility functions for GraphMyTunes analysis modules.
 """
 
+import logging
+import os
+
 import matplotlib
 
 # Use the 'Agg' backend for non-GUI rendering
 matplotlib.use("Agg")
 import os
-from typing import List
+import re
+from typing import Any, List
 
 # flake8: noqa: E402
 import matplotlib.pyplot as plt
 import pandas as pd
+from wordcloud import WordCloud
 
 from src import __version__
 
 
-def ensure_columns(df: pd.DataFrame, columns: List[str]) -> None:
+def setup_analysis_logging(debug: bool = False) -> None:
+    """Set up logging configuration for analysis modules.
+
+    This is needed because analysis modules run in separate processes
+    and don't inherit the main process's logging configuration.
+    """
+    if debug and not logging.getLogger().handlers:
+        # Only configure logging if it hasn't been configured yet in this process
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(asctime)s [%(levelname)s] %(message)s {%(filename)s:%(lineno)d}",
+        )
+
+    # Always suppress verbose matplotlib font debugging
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.WARNING)
+
+
+def ensure_columns(df: pd.DataFrame, columns: list[str]) -> None:
     """Ensure the DataFrame contains the specified columns."""
     missing = [col for col in columns if col not in df.columns]
     if missing:
@@ -33,13 +55,53 @@ def rating_to_stars(rating: pd.Series) -> pd.Series:
 def trim_label(label: str, max_len: int = 32) -> str:
     """Trim a label to a maximum length, appending an ellipsis if it exceeds
     the limit."""
-    return label if len(label) <= max_len else label[:max_len] + "…"
+    return label if len(label) <= max_len else label[:max_len].strip() + "…"
+
+
+def create_artist_track_label(artist: str, title: str, max_len: int = 32) -> str:
+    """Create a formatted label with artist name followed by quoted track title.
+
+    Args:
+        artist: The artist name
+        title: The track title
+
+    Returns:
+        A formatted string like 'Artist Name: "Track Title"'
+    """
+    return f"{artist}: “{trim_label(title, max_len)}”"
+
+
+def create_artist_album_label(artist: str, album: str, max_len: int = 32) -> str:
+    """Create a formatted label with artist name followed by italicized album name, separated by a colon.
+
+    Args:
+        artist: The artist name
+        album: The album name
+        max_len: Maximum length for the album name before trimming
+
+    Returns:
+        A formatted string like "Artist Name: Album Name" with proper LaTeX escaping
+    """
+    trimmed_album = trim_label(album, max_len)
+
+    # Simple approach: Only use LaTeX for albums with safe characters
+    # This avoids the complexity of escaping while still providing italics where possible
+    unsafe_chars = set("#&%$_^~\\{}|<>")
+
+    if any(char in unsafe_chars for char in trimmed_album):
+        # For albums with problematic characters, use simple formatting
+        return f"{artist}: {trimmed_album}"
+    else:
+        # For safe albums, use LaTeX italics
+        # Replace spaces with LaTeX spacing
+        safe_album = trimmed_album.replace(" ", "\\ ")
+        return f"{artist}: $\\mathit{{{safe_album}}}$"
 
 
 def get_numeric_axes(ax: plt.Axes) -> str:
     """Return "x" if x-axis is numeric, "y" otherwise."""
 
-    def is_numeric(tick_labels: List[plt.Text]) -> bool:
+    def is_numeric(tick_labels: list[plt.Text]) -> bool:
         """Check if the first tick label of a given axis is numeric."""
         if not tick_labels:
             return False
@@ -71,6 +133,10 @@ def save_plot(title: str, output_path: str, ext: str = "png", dpi: int = 300) ->
     plt.rcParams["axes.labelsize"] = 10
     plt.rcParams["axes.titlesize"] = 14
     plt.rcParams["axes.titleweight"] = "bold"
+
+    # Configure matplotlib to handle LaTeX math text properly
+    plt.rcParams["mathtext.default"] = "regular"
+    plt.rcParams["mathtext.fontset"] = "dejavusans"
 
     # Set the plot title and style
     plt.suptitle(
@@ -151,3 +217,49 @@ def sec_to_human_readable(secs: int) -> str:
         parts.append("0s")
 
     return " ".join(parts)
+
+
+def bytes_to_human_readable(bytes_val):
+    """Convert bytes to a human-readable format."""
+    if bytes_val >= 1024**3:  # GB
+        return f"{bytes_val / (1024**3):.1f} GB"
+    elif bytes_val >= 1024**2:  # MB
+        return f"{bytes_val / (1024**2):.1f} MB"
+    elif bytes_val >= 1024:  # KB
+        return f"{bytes_val / 1024:.1f} KB"
+    else:
+        return f"{bytes_val:.0f} bytes"
+
+
+def create_wordcloud(
+    text: pd.Series, stopwords: set, params: dict[str, Any]
+) -> WordCloud:
+    """Create a WordCloud object from the given text and stopwords."""
+
+    # Remove duplicates
+    unique_titles = text.drop_duplicates()
+
+    # Combine all titles into one text string
+    all_titles_text = " ".join(unique_titles)
+
+    # Clean the text: remove extra whitespace and convert to lowercase
+    all_titles_text = re.sub(r"\s+", " ", all_titles_text.lower().strip())
+
+    # Create the word cloud
+    max_words = params.get("max_words", 200)
+    wordcloud = WordCloud(
+        width=1200,
+        height=600,
+        background_color="white",
+        stopwords=stopwords,
+        max_words=max_words,
+        colormap="plasma",
+        relative_scaling=0.5,
+        min_font_size=10,
+        max_font_size=100,
+        prefer_horizontal=0.9,
+        collocations=False,  # Don't group words together
+        normalize_plurals=False,  # Keep plurals as separate words
+    ).generate(all_titles_text)
+
+    return wordcloud

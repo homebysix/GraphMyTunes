@@ -1,3 +1,4 @@
 matplotlib==3.10.3
 pandas==2.2.3
 PyYAML==6.0.2
+wordcloud==1.9.3

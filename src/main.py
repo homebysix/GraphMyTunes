@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import time
-from typing import Any, Dict, Tuple
+from typing import Any
 
 import pandas as pd
 
@@ -66,8 +66,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def run_analysis(
-    args: Tuple[str, pd.DataFrame, Dict[str, Any], str],
-) -> Tuple[str, str, float]:
+    args: tuple[str, pd.DataFrame, dict[str, Any], str],
+) -> tuple[str, str, float]:
     """Run a specific analysis in a separate process."""
     analysis, tracks_df, config, output_dir = args
 
@@ -90,7 +90,7 @@ def run_analysis(
         return output_file
 
     start_time = time.perf_counter()
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     # Add analysis-specific parameters if present
     params = config.get("analyses", {}).get(analysis, {}) if config else {}
@@ -134,6 +134,9 @@ def main() -> None:
         logging.error("'--top' must be an integer greater than zero.")
         sys.exit(1)
     config["top"] = args.top
+
+    # Add debug flag to config so analysis modules can access it
+    config["debug"] = args.debug
 
     # Verify iTunes XML file exists
     xml_file_path = args.itunes_xml_path
