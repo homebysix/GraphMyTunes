@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 - New visualizations that show the songs, albums, and artists with the highest play-to-skip and skip-to-play ratios
 - New visualization that shows your top artists ranked by song count
 - New visualization that shows how many songs, albums, and artists you've listened to at least N times
+- New visualization that produces a heatmap of last play date/time per each weekday/hour
 - Library overview: Added average track length, average play count, average file size, and total library size
 
 ### Changed
