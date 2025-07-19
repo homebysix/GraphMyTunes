@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [1.1.0] - 2025-07-19
+
 ### Added
 
 - New visualizations that produce word clouds based on names of songs, albums, and artists in your library
@@ -20,9 +24,11 @@ All notable changes to this project will be documented in this file. This projec
 - Width of many graphs adjusted from 6 to 8 inches
 - Album graphs: Now include artist and italicized album name
 - Track graphs: Now include artist and quoted song name
+- Release process automated and release documentation improved
 
 ## 1.0.0 - 2025-07-05
 
 - Initial public release of GraphMyTunes!
 
-[Unreleased]: https://github.com/homebysix/GraphMyTunes/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/homebysix/GraphMyTunes/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/homebysix/GraphMyTunes/compare/v1.0.0...v1.1.0
