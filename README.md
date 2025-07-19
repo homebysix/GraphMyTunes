@@ -63,7 +63,7 @@ Follow these 3 steps to get started analyzing your music library.
 
 ## Featured Analyses
 
-GraphMyTunes includes 40+ built-in ways to analyze your music collection, including but not limited to:
+GraphMyTunes includes 50+ built-in ways to analyze your music collection, including but not limited to:
 
 <div style="display: flex; flex-wrap: wrap; gap: 2em;">
 <div style="flex: 1 1 300px; min-width: 250px;">
