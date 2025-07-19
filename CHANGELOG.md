@@ -6,7 +6,14 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased]
 
-Nothing yet.
+### Fixed
+
+- Album graphs: Axis label adjusted to "Album"
+
+### Changed
+
+- Further automations and improvements to release process
+- Album and track word clouds: Added more stop words
 
 ## [1.1.0] - 2025-07-19
 
