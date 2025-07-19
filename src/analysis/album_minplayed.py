@@ -1,4 +1,4 @@
-"""albums_minplayed.py
+"""album_minplayed.py
 
 Create a bar chart showing what percentage of albums have been played at least N times
 for x values in the 99th percentile of play counts. Album play count is determined by
