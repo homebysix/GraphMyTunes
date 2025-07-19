@@ -36,7 +36,18 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
 
     # Add custom track-specific stop words if needed
     custom_stopwords = STOPWORDS.copy()
-    custom_stopwords.update({"feat", "remix"})
+    custom_stopwords.update(
+        {
+            "demo",
+            "edit",
+            "feat",
+            "live",
+            "mix",
+            "radio",
+            "remix",
+            "version",
+        }
+    )
 
     # Create the word cloud
     wordcloud = create_wordcloud(song_titles, custom_stopwords, params)

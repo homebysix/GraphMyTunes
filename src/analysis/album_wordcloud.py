@@ -39,6 +39,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     custom_stopwords.update(
         {
             "album",
+            "feat",
             "greatest",
             "hits",
         }
