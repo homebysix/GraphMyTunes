@@ -8,12 +8,16 @@ from typing import Any, Dict
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, save_plot
+from src.analysis._utils_ import ensure_columns, save_plot, setup_analysis_logging
 
 
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+
+    # Ensure required columns exist
     ensure_columns(tracks_df, ["Year", "Play Count", "Total Time"])
 
     # Drop rows with missing or invalid years, play counts, or durations

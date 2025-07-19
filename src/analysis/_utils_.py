@@ -3,6 +3,8 @@
 Utility functions for GraphMyTunes analysis modules.
 """
 
+import logging
+
 import matplotlib
 
 # Use the 'Agg' backend for non-GUI rendering
@@ -17,6 +19,23 @@ import pandas as pd
 from wordcloud import WordCloud
 
 from src import __version__
+
+
+def setup_analysis_logging(debug: bool = False) -> None:
+    """Set up logging configuration for analysis modules.
+
+    This is needed because analysis modules run in separate processes
+    and don't inherit the main process's logging configuration.
+    """
+    if debug and not logging.getLogger().handlers:
+        # Only configure logging if it hasn't been configured yet in this process
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(asctime)s [%(levelname)s] %(message)s {%(filename)s:%(lineno)d}",
+        )
+
+    # Always suppress verbose matplotlib font debugging
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.WARNING)
 
 
 def ensure_columns(df: pd.DataFrame, columns: List[str]) -> None:

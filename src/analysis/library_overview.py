@@ -5,6 +5,7 @@ total number of artists, and total number of albums, total play time, first and
 last songs added, and average playtime per day over the age of the library.
 """
 
+import logging
 from datetime import datetime
 from typing import Any, Dict
 
@@ -17,11 +18,15 @@ from src.analysis._utils_ import (
     ensure_columns,
     save_plot,
     sec_to_human_readable,
+    setup_analysis_logging,
 )
 
 
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
+
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
 
     # Ensure required columns exist
     required_columns = [
@@ -35,6 +40,8 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     ]
     ensure_columns(tracks_df, required_columns)
 
+    logging.debug("Required columns verified: %s", required_columns)
+
     # Calculate stats
     total_tracks = len(tracks_df)
     total_artists = tracks_df["Artist"].nunique()
@@ -46,8 +53,22 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         tracks_df["Rating"].notnull().sum() if "Rating" in tracks_df.columns else 0
     )
 
+    logging.debug(
+        "Basic stats calculated - tracks: %d, artists: %d, albums: %d",
+        total_tracks,
+        total_artists,
+        total_albums,
+    )
+    logging.debug(
+        "Total play time: %.2f seconds, rated tracks: %d",
+        total_play_time_sec,
+        tracks_with_rating,
+    )
+
     first_added = tracks_df["Date Added"].min()
     last_added = tracks_df["Date Added"].max()
+
+    logging.debug("Date range: %s to %s", first_added, last_added)
 
     # Name and artist of first song added
     first_song_row = tracks_df.loc[tracks_df["Date Added"].idxmin()]
@@ -60,6 +81,9 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     last_song_name = create_artist_track_label(
         last_song_row["Artist"], last_song_row["Name"]
     )
+
+    logging.debug("First song added: %s", first_song_name)
+    logging.debug("Last song added: %s", last_song_name)
 
     # Calculate average playtime per day since first song added until today
     today = pd.Timestamp(datetime.now())
@@ -76,6 +100,19 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     # Calculate average file size and total library size
     avg_file_size_bytes = tracks_df["Size"].mean()
     total_library_size_bytes = tracks_df["Size"].sum()
+
+    logging.debug(
+        "Library age: %d days (%.2f seconds total)",
+        days_since_first,
+        secs_since_first,
+    )
+    logging.debug(
+        "Average calculations - track length: %.2f sec, play count: %.2f, file size: %.2f bytes",
+        avg_track_length_sec,
+        avg_play_count,
+        avg_file_size_bytes,
+    )
+    logging.debug("Total library size: %.2f bytes", total_library_size_bytes)
 
     # Prepare table data
     stats = [
@@ -99,6 +136,9 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
         ],
     ]
 
+    logging.debug("Generated %d statistics for the overview table", len(stats))
+    logging.debug("Creating matplotlib figure and table")
+
     _, ax = plt.subplots(figsize=(8, 6))
     ax.axis("off")
     table = ax.table(
@@ -116,6 +156,11 @@ def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> st
     table.scale(1, 1.5)
 
     title = "Library Overview"
+
+    logging.debug("Saving plot to: %s.png", output_path)
+
     save_plot(title, output_path, ext="png", dpi=300)
+
+    logging.debug("Library overview analysis completed successfully")
 
     return f"{output_path}.png"

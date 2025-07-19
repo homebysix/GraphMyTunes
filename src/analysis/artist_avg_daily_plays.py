@@ -13,6 +13,7 @@ from src.analysis._utils_ import (
     ensure_columns,
     get_today_matching_tz,
     save_plot,
+    setup_analysis_logging,
     trim_label,
 )
 
@@ -20,6 +21,10 @@ from src.analysis._utils_ import (
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+
+    # Ensure required columns exist
     ensure_columns(tracks_df, ["Play Count", "Date Added", "Artist"])
 
     df = tracks_df.dropna(subset=["Play Count", "Date Added", "Artist"]).copy()

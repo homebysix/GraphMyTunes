@@ -135,6 +135,9 @@ def main() -> None:
         sys.exit(1)
     config["top"] = args.top
 
+    # Add debug flag to config so analysis modules can access it
+    config["debug"] = args.debug
+
     # Verify iTunes XML file exists
     xml_file_path = args.itunes_xml_path
     if not xml_file_path or not os.path.exists(xml_file_path):

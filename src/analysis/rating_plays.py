@@ -10,12 +10,21 @@ from typing import Any, Dict
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.analysis._utils_ import ensure_columns, rating_to_stars, save_plot
+from src.analysis._utils_ import (
+    ensure_columns,
+    rating_to_stars,
+    save_plot,
+    setup_analysis_logging,
+)
 
 
 def run(tracks_df: pd.DataFrame, params: Dict[str, Any], output_path: str) -> str:
     """This run() function is executed by the analysis engine."""
 
+    # Set up logging for this analysis process
+    setup_analysis_logging(params.get("debug", False))
+
+    # Ensure required columns exist
     ensure_columns(tracks_df, ["Rating", "Play Count"])
 
     star_ratings = rating_to_stars(tracks_df["Rating"])
