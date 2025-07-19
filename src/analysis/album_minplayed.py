@@ -66,7 +66,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     plt.figure(figsize=(8, 6))
     plt.bar(x_values, y_values, color=plt.get_cmap("tab10")(0), edgecolor="black")
 
-    plt.xlabel("Minimum Play Count (N)")
+    plt.xlabel("Minimum Play Count")
     plt.ylabel("Percentage of albums")
     plt.ylim(0, 100)
 
@@ -74,7 +74,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     if len(x_values) <= 50:
         plt.xticks(x_values[:: max(1, len(x_values) // 20)])  # Show every nth tick
 
-    title = "Percentage of Albums Played At Least N Times"
+    title = "Percentage of Albums Played At Least X Times (P$_{99}$)"
     save_plot(title, output_path, ext="png", dpi=300)
 
     return f"{output_path}.png"

@@ -45,7 +45,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     plt.ylabel("Number of Tracks")
     plt.xlim(0, 2000)
     plt.xticks(np.arange(0, 2001, 64), rotation=45)
-    title = "Distribution of Song Bit Rates (≤99th percentile)"
+    title = "Distribution of Song Bit Rates (P$_{99}$)"
     save_plot(title, output_path, ext="png", dpi=300)
 
     return f"{output_path}.png"

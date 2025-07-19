@@ -57,7 +57,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
 
     plt.xlabel("Duration")
     plt.ylabel("Number of Tracks")
-    title = "Distribution of Song Durations (≤99th percentile)"
+    title = "Distribution of Song Durations (P$_{99}$)"
     save_plot(title, output_path, ext="png", dpi=300)
 
     return f"{output_path}.png"
