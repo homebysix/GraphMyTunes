@@ -23,7 +23,11 @@ New versions of GraphMyTunes can be published as follows.
         .venv/bin/python -m pip install -e . --force-reinstall
         .venv/bin/graphmytunes --version
 
-1. [Merge the dev branch to main](https://github.com/homebysix/GraphMyTunes/compare/dev?expand=1) on GitHub.
+1. [Submit a pull request to merge dev to main](https://github.com/homebysix/GraphMyTunes/compare/dev?expand=1) on GitHub.
+
+1. Wait for tests to pass, then merge.
+
+1. Change to local main branch.
 
 ## Step 2: Publish to TestPyPI
 
