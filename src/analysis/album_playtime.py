@@ -47,13 +47,13 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     )
 
     # Create artist: album labels with italicized album names
-    df["Label"] = df.apply(
+    df["Album"] = df.apply(
         lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
     )
 
     # Sum play time by label
     window = (
-        df.groupby("Label")["Total Play Time (Hours)"].sum().sort_values(ascending=True)
+        df.groupby("Album")["Total Play Time (Hours)"].sum().sort_values(ascending=True)
     )
 
     # TODO: Adjust title and result limit based on parameters

@@ -45,13 +45,13 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     df = df[df["Play Count"] > 0]
 
     # Create artist: album labels with italicized album names
-    df["Label"] = df.apply(
+    df["Album"] = df.apply(
         lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
     )
 
     # Aggregate by album label
     album_stats = (
-        df.groupby("Label")
+        df.groupby("Album")
         .agg({"Play Count": "sum", "Skip Count": "sum"})
         .reset_index()
     )
@@ -80,7 +80,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     # Plot the data
     window.plot(
         kind="barh",
-        x="Label",
+        x="Album",
         y="Play Ratio",
         color=plt.get_cmap("tab10").colors,
         edgecolor="black",

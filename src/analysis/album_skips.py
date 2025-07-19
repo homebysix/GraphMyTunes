@@ -36,13 +36,13 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     )
 
     # Create artist: album labels with italicized album names
-    df["Label"] = df.apply(
+    df["Album"] = df.apply(
         lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
     )
 
     # Sum skip count by label and get top N
     window = (
-        df.groupby("Label")["Skip Count"]
+        df.groupby("Album")["Skip Count"]
         .sum()
         .sort_values(ascending=True)
         .tail(params["top"])

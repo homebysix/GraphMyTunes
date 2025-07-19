@@ -66,7 +66,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     )
 
     # Create artist: album labels with italicized album names
-    window["Label"] = window.apply(
+    window["Album"] = window.apply(
         lambda row: create_artist_album_label(row["Album Artist"], row["Album"]), axis=1
     )
 
@@ -76,7 +76,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     # Plot the results
     window[::-1].plot(
         kind="barh",
-        x="Label",
+        x="Album",
         y="Avg Daily Plays",
         color=plt.get_cmap("tab10").colors,
         edgecolor="black",

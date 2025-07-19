@@ -60,7 +60,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     labels = []
     for _, row in window.iterrows():
         labels.append(create_artist_album_label(row["Album Artist"], row["Album"]))
-    window["Label"] = labels
+    window["Album"] = labels
 
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
@@ -79,7 +79,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     else:
         window.plot(
             kind="barh",
-            x="Label",
+            x="Album",
             y="avg_rating_stars",
             color=plt.get_cmap("tab10").colors,
             edgecolor="black",
