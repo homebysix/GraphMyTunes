@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. This projec
 - Further automations and improvements to release process
 - Artist graphs: Consistently trim long artist names
 - Play count distribution: Limit to 99th percentile of play counts
+- Last played weekday/hour heatmap: Adjusted title
 
 ## [1.1.0] - 2025-07-19
 

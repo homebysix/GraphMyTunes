@@ -132,7 +132,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
         bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
     )
 
-    title = "Listening Patterns: Day of Week vs. Hour of Day Heatmap"
+    title = "Last Played Heatmap by Weekday and Hour"
     save_plot(title, output_path, ext="png", dpi=300)
 
     return f"{output_path}.png"
