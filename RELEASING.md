@@ -23,31 +23,39 @@ New versions of GraphMyTunes can be published as follows.
 
 ## Step 2: Publish to TestPyPI
 
-1. From the dev branch, create and push a new tag:
+1. Create and push a new tag using the release script:
 
         ./scripts/release.py 1.2.3  # adjust to match actual version
 
-1. GitHub Actions will automatically publish to TestPyPI and post a comment with verification instructions.
+   This script will:
+   - Update the version in `pyproject.toml`
+   - Commit the version change
+   - Create and push a git tag (`v1.2.3`)
+   - Trigger the automated CI/CD workflow
 
-1. Install from TestPyPI:
+1. GitHub Actions will:
+    - Publish to TestPyPI
+    - Post a comment with next steps
+
+1. Install from TestPyPI and test:
 
         .venv/bin/python -m pip install --upgrade -i https://test.pypi.org/simple/ GraphMyTunes==1.2.3
-
-1. Perform manual tests:
-
         .venv/bin/graphmytunes --version
         .venv/bin/graphmytunes --help
         .venv/bin/graphmytunes /path/to/itunes.xml
 
 ## Step 3: Publish to PyPI and GitHub
 
-1. From the dev branch, create and push a new tag for the final release:
+1. Go to [GitHub Actions](https://github.com/homebysix/GraphMyTunes/actions/workflows/publish.yml) and manually trigger the workflow:
+   - Click "Run workflow"
+   - Select the tag you want to publish (e.g., `v1.2.3`)
+   - Set "Target repository" to `pypi`
+   - Click "Run workflow"
 
-        ./scripts/release.py 1.2.3  # adjust to match actual version
-
-1. GitHub Actions will automatically publish to PyPI and post a comment with next steps.
-
-1. After successful PyPI publication, GitHub will automatically create a GitHub release with changelog notes and post a success notification.
+1. GitHub Actions will:
+   - Publish to PyPI
+   - Create a GitHub release with changelog notes
+   - Post a success notification
 
 1. Confirm the package is available on [PyPI](https://pypi.org/project/GraphMyTunes/):
 
