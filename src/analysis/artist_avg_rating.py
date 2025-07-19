@@ -58,7 +58,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     # Trim artist names for better readability
-    window["Artist (Trimmed)"] = window["Artist"].apply(trim_label)
+    window["Artist"] = window["Artist"].apply(trim_label)
 
     # Plot the data, if there is data to plot
     if window.empty:
@@ -74,7 +74,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     else:
         window.plot(
             kind="barh",
-            x="Artist (Trimmed)",
+            x="Artist",
             y="avg_rating_stars",
             color=plt.get_cmap("tab10").colors,
             edgecolor="black",

@@ -53,7 +53,7 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     plt.figure(figsize=(8, 6))
     plt.bar(x_values, y_values, color=plt.get_cmap("tab10")(0), edgecolor="black")
 
-    plt.xlabel("Played at least N times")
+    plt.xlabel("Minimum Play Count (N)")
     plt.ylabel("Percentage of tracks")
     plt.ylim(0, 100)
 

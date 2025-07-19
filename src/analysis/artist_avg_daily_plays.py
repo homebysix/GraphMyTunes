@@ -64,14 +64,14 @@ def run(tracks_df: pd.DataFrame, params: dict[str, Any], output_path: str) -> st
     )
 
     # Trim long names for top artists
-    window["Artist (Trimmed)"] = window["Artist"].apply(trim_label)
+    window["Artist"] = window["Artist"].apply(trim_label)
 
     # Set figure height dynamically based on number of rows
     plt.figure(figsize=(8, max(2, len(window) * 0.35)))
 
     window[::-1].plot(
         kind="barh",
-        x="Artist (Trimmed)",
+        x="Artist",
         y="Avg Daily Plays",
         color=plt.get_cmap("tab10").colors,
         edgecolor="black",
