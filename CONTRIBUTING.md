@@ -15,9 +15,9 @@ Thank you for your interest in contributing to GraphMyTunes! Your help is welcom
 3. **Install dependencies** (preferably in a virtual environment):
 
     ```bash
-    python3 -m virtualenv venv
-    source venv/bin/activate
-    venv/bin/python3 -m pip install -r requirements.txt
+    python3 -m virtualenv .venv
+    source .venv/bin/activate
+    .venv/bin/python3 -m pip install -r requirements.txt
     ```
 
 ## Code Quality & Style
@@ -38,7 +38,7 @@ GraphMyTunes is designed to be simple to extend for those with Python and Matplo
 To ensure the functionality of the analysis functions, run the tests located in the `tests` directory:
 
 ```bash
-venv/bin/python3 -m unittest discover -vs tests
+.venv/bin/python3 -m unittest discover -vs tests
 ```
 
 Please add or update tests for any new features or bug fixes.
