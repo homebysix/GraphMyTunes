@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 
+- Replaced yearly song CSV output with two new timeline visualizations:
+    - Song of the year by play count
+    - Song of the year by play time
 - Clarified and corrected axis labels on many graphs
 - Album and track word clouds: Added more stop words
 - Further automations and improvements to release process
