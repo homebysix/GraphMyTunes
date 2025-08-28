@@ -1,6 +1,8 @@
 # ![GraphMyTunes](img/logo.png) <!-- omit in toc -->
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Python 3.13](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3130/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3130/)
+[![Text: T.AI.2](https://img.shields.io/badge/Text-T.AI.2-blue)](https://www.badgeai.org/about)
 
 <!-- TODO: Badge for latest PyPI version, PyPI downloads, code coverage. -->
 
