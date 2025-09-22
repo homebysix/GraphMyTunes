@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
         args: [--maxkb=100]
@@ -22,8 +22,8 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
         exclude: ^img/
-  - repo: https://github.com/ambv/black
-    rev: 25.1.0
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
